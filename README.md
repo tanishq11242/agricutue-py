@@ -5,7 +5,9 @@ this app is for farmers
 A Streamlit app where a farmer enters crop, land, soil, water, fertilizer and farming practices and gets an estimated harvest (total, per acre/hectare, likely range, income) plus tips on what is holding the yield back.
 
 ## Run
-
+first install streamlit in your system 
+then open your terminal
+then
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
