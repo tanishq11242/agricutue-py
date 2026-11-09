@@ -1,21 +1,9 @@
-"""Crop yield estimator based on simple agronomic rules.
 
-This is NOT a machine-learning model trained on a dataset. It starts from the
-best yield a crop can reach on a good farm (the "potential yield") and reduces
-it for each thing that holds the crop back: water, fertilizer, soil, sowing
-date, seed, pests, weeds and weather. All yields are in quintals per hectare
-(1 quintal = 100 kg). The numbers are typical Indian values and give a rough
-planning estimate, not a guarantee.
-"""
 
 from dataclasses import dataclass, field
 import math
 
-# potential / typical: quintal per hectare
-# water: seasonal water need in mm (rain + irrigation)
-# npk: recommended N, P2O5, K2O in kg per hectare
-# ph: best soil pH range
-# late: yield lost per day of delayed sowing (fraction)
+
 CROPS = {
     "Wheat": dict(potential=55, typical=35, water=(350, 500), npk=(120, 60, 40),
                   ph=(6.0, 7.5), late=0.010, season="Rabi (winter)"),
@@ -39,7 +27,7 @@ CROPS = {
 
 SOILS = ["Alluvial (Gangetic plain)", "Loam", "Clay", "Black (regur)", "Red", "Sandy"]
 
-# how well each soil suits each crop (1.0 = best)
+
 SOIL_FIT = {
     "Wheat":                {"Loam": 1.00, "Alluvial (Gangetic plain)": 1.00, "Clay": 0.92, "Black (regur)": 0.95, "Red": 0.85, "Sandy": 0.75},
     "Rice (paddy)":         {"Clay": 1.00, "Alluvial (Gangetic plain)": 0.97, "Loam": 0.95, "Black (regur)": 0.90, "Red": 0.80, "Sandy": 0.60},
@@ -62,7 +50,7 @@ WEEDS = {"Controlled well": 1.00, "Partly controlled": 0.92, "Poorly controlled"
 WEATHER = {"None": 1.00, "Mild (a few hot/cold/dry days)": 0.92, "Severe (frost, heat wave, flood or long drought)": 0.75}
 
 IRRIGATION_MM = 50  # water in one irrigation, a typical value
-FYM_EFFECTIVE = (2.0, 1.0, 2.0)  # kg N, P2O5, K2O available per tonne of farmyard manure in year one
+FYM_EFFECTIVE = (2.0, 1.0, 2.0) 
 
 
 @dataclass
